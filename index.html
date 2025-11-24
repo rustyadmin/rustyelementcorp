@@ -2,25 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>SaNAI – Safety Net for AI | Rusty Element Inc.</title>
+  <title>RustyElement · SaNAI – Safety Net for AI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="SaNAI is an industry-wide safety net for Generative AI: multi-model aggregation, on-chain audit trail, and DAO-based compensation for AI-caused damage."
+    content="RustyElement SaNAI – a safety net for Generative AI: multi-model aggregation, on-chain audit trails, and DAO-based compensation for AI-caused damage."
   />
   <style>
     :root {
-      --bg: #040617;
-      --bg-alt: #05081f;
-      --card: #070b2a;
-      --accent: #4f46e5;
-      --accent-soft: rgba(79, 70, 229, 0.15);
-      --text: #f9fafb;
-      --muted: #9ca3af;
-      --border: rgba(148, 163, 184, 0.25);
+      /* COLOR SYSTEM – RUST / BROWN ONLY */
+      --bg: #0b0908;
+      --bg-alt: #15100f;
+      --bg-soft: #1f1714;
+      --card: #1c1411;
+      --card-soft: #251913;
+      --accent: #d26930;             /* rust orange */
+      --accent-soft: rgba(210, 105, 48, 0.2);
+      --accent-strong: #f0b56b;      /* copper highlight */
+      --text: #f9f3ea;               /* warm off-white */
+      --muted: #b8aa9a;              /* warm grey */
+      --border: rgba(120, 90, 65, 0.65);
+      --border-soft: rgba(78, 57, 42, 0.9);
       --radius-lg: 18px;
       --radius-xl: 26px;
-      --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.7);
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.85);
     }
 
     * {
@@ -32,7 +37,8 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #0b102f 0, #020617 55%, #000 100%);
+      background:
+        radial-gradient(circle at top, #3b2317 0, #0b0908 52%, #050302 100%);
       color: var(--text);
       line-height: 1.6;
       scroll-behavior: smooth;
@@ -48,8 +54,6 @@
       display: block;
     }
 
-    /* Layout */
-
     .container {
       width: 100%;
       max-width: 1120px;
@@ -64,11 +68,11 @@
       backdrop-filter: blur(20px);
       background: linear-gradient(
         to bottom,
-        rgba(15, 23, 42, 0.96),
-        rgba(15, 23, 42, 0.82),
+        rgba(10, 7, 6, 0.96),
+        rgba(10, 7, 6, 0.86),
         transparent
       );
-      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      border-bottom: 1px solid rgba(70, 49, 35, 0.9);
     }
 
     .nav {
@@ -83,31 +87,21 @@
       align-items: center;
       gap: 10px;
       font-weight: 600;
-      /* letter-spacing: 0.03em; */
+      letter-spacing: 0.03em;
     }
 
     .logo-mark {
-      width: 58px;
-      height: 58px;
-      /* border-radius: 999px; */
-      /* background: conic-gradient(
-        from 180deg,
-        #4f46e5,
-        #06b6d4,
-        #a855f7,
-        #4f46e5
-      ); */
-      /* display: grid; */
-      /* place-items: center; */
-      /* font-size: 14px; */
+      width: 60px;
+      height: 60px;
+    
+      display: grid;
+      place-items: center;
     }
 
-    /* .logo-mark span {
-      background: #020617;
-      border-radius: 999px;
-      padding: 3px 7px;
+    .logo-sub {
       font-size: 11px;
-    } */
+      color: var(--muted);
+    }
 
     .nav-links {
       display: flex;
@@ -128,7 +122,11 @@
       bottom: 0;
       width: 0;
       height: 1.5px;
-      background: linear-gradient(to right, #4f46e5, #a855f7);
+      background: linear-gradient(
+        to right,
+        var(--accent),
+        var(--accent-strong)
+      );
       transition: width 0.2s ease;
     }
 
@@ -147,30 +145,33 @@
       padding: 8px 16px;
       font-size: 13px;
       border: 1px solid var(--border);
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(11, 8, 6, 0.95);
       color: var(--text);
       cursor: pointer;
-      transition: background 0.2s ease, border-color 0.2s ease,
-        transform 0.08s ease;
+      transition: background 0.18s ease, border-color 0.18s ease,
+        transform 0.08s ease, box-shadow 0.18s ease;
       white-space: nowrap;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
       border: none;
-      box-shadow: 0 14px 40px rgba(37, 99, 235, 0.45);
+      box-shadow: 0 14px 40px rgba(143, 72, 33, 0.7);
+      color: #2a1309;
+      font-weight: 600;
     }
 
     .btn:hover {
       transform: translateY(-1px);
-      border-color: #e5e7eb;
+      border-color: var(--accent-strong);
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.8);
     }
 
     main {
       padding-bottom: 80px;
     }
 
-    /* Hero */
+    /* HERO */
 
     .hero {
       padding: 72px 0 40px;
@@ -187,9 +188,11 @@
       .hero-grid {
         grid-template-columns: minmax(0, 1fr);
       }
-
       .nav-links {
         display: none;
+      }
+      header {
+        background: rgba(8, 5, 4, 0.96);
       }
     }
 
@@ -199,8 +202,8 @@
       gap: 8px;
       padding: 4px 9px 4px 4px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.55);
-      background: radial-gradient(circle at top left, #1d243b, #020617);
+      border: 1px solid rgba(120, 90, 65, 0.85);
+      background: radial-gradient(circle at top left, #2d1a12, #0b0908);
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.15em;
@@ -211,9 +214,9 @@
     .eyebrow-pill {
       padding: 4px 8px;
       border-radius: 999px;
-      background: radial-gradient(circle at top, #4f46e5, #22c1c3);
-      color: #e5e7eb;
-      font-weight: 600;
+      background: radial-gradient(circle at top, var(--accent), var(--accent-strong));
+      color: #2a1309;
+      font-weight: 700;
     }
 
     .hero h1 {
@@ -223,7 +226,7 @@
     }
 
     .hero h1 span {
-      background: linear-gradient(120deg, #a855f7, #22c1c3);
+      background: linear-gradient(120deg, var(--accent-strong), #fff4db);
       -webkit-background-clip: text;
       color: transparent;
     }
@@ -232,13 +235,13 @@
       max-width: 540px;
       color: var(--muted);
       font-size: 15px;
-      margin-bottom: 26px;
+      margin-bottom: 24px;
     }
 
     .hero-sub-kr {
       margin-top: 4px;
       font-size: 14px;
-      color: #9ca3af;
+      color: var(--muted);
     }
 
     .hero-cta-row {
@@ -255,14 +258,14 @@
     }
 
     .hero-note strong {
-      color: #e5e7eb;
+      color: var(--accent-strong);
     }
 
     .hero-metrics {
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
-      margin-top: 24px;
+      margin-top: 26px;
       font-size: 12px;
       color: var(--muted);
     }
@@ -270,12 +273,12 @@
     .hero-metric {
       padding: 10px 14px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(21, 13, 10, 0.96);
+      border: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       gap: 2px;
-      min-width: 150px;
+      min-width: 160px;
     }
 
     .hero-metric span:first-child {
@@ -286,16 +289,17 @@
 
     .hero-metric span:last-child {
       font-weight: 600;
-      color: #e5e7eb;
+      color: var(--text);
       font-size: 14px;
     }
 
-    /* Hero visualization card */
+    /* HERO CARD */
 
     .hero-card {
       border-radius: var(--radius-xl);
-      background: radial-gradient(circle at top, #111827, #020617);
-      border: 1px solid rgba(148, 163, 184, 0.45);
+      background:
+        radial-gradient(circle at top, #2f1b13, #0b0908);
+      border: 1px solid var(--border);
       box-shadow: var(--shadow-soft);
       padding: 18px 18px 14px;
       position: relative;
@@ -307,10 +311,10 @@
       top: 14px;
       right: 14px;
       font-size: 11px;
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(10, 6, 4, 0.9);
       border-radius: 999px;
       padding: 4px 9px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      border: 1px solid rgba(176, 129, 92, 0.9);
       color: var(--muted);
     }
 
@@ -319,6 +323,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 14px;
+      gap: 10px;
     }
 
     .hero-card-title {
@@ -339,8 +344,9 @@
     .hero-card-tag {
       padding: 3px 7px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(22, 12, 8, 0.96);
+      border: 1px solid rgba(176, 129, 92, 0.9);
+      color: var(--muted);
     }
 
     .hero-card-body {
@@ -349,11 +355,17 @@
       gap: 14px;
     }
 
+    @media (max-width: 640px) {
+      .hero-card-body {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
     .hero-card-col {
-      background: rgba(15, 23, 42, 0.7);
+      background: var(--bg-soft);
       border-radius: var(--radius-lg);
       padding: 10px 11px;
-      border: 1px solid rgba(31, 41, 55, 0.9);
+      border: 1px solid var(--border-soft);
       font-size: 11px;
     }
 
@@ -370,7 +382,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 5px 0;
-      border-bottom: 1px dashed rgba(55, 65, 81, 0.9);
+      border-bottom: 1px dashed rgba(78, 57, 42, 0.9);
     }
 
     .hero-ai-row:last-child {
@@ -387,7 +399,8 @@
       width: 8px;
       height: 8px;
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 0, #22c1c3, #4f46e5);
+      background:
+        radial-gradient(circle at 20% 0, var(--accent-strong), var(--accent));
     }
 
     .hero-ai-meta {
@@ -399,21 +412,22 @@
     .hero-claim {
       margin-top: 6px;
       padding-top: 6px;
-      border-top: 1px dashed rgba(55, 65, 81, 0.9);
+      border-top: 1px dashed rgba(78, 57, 42, 0.9);
       font-size: 11px;
       color: var(--muted);
     }
 
     .hero-claim strong {
-      color: #e5e7eb;
+      color: var(--accent-strong);
     }
 
     .hero-chart {
       height: 120px;
       border-radius: 16px;
-      background: radial-gradient(circle at top left, #4f46e5, transparent),
-        radial-gradient(circle at bottom right, #22c1c3, transparent),
-        #020617;
+      background:
+        radial-gradient(circle at top left, rgba(210, 105, 48, 0.65), transparent),
+        radial-gradient(circle at bottom right, rgba(65, 37, 24, 0.95), transparent),
+        #0b0908;
       position: relative;
       overflow: hidden;
       margin-top: 6px;
@@ -422,11 +436,11 @@
     .hero-chart-grid {
       position: absolute;
       inset: 10px 10px 14px 12px;
-      opacity: 0.6;
+      opacity: 0.5;
     }
 
     .hero-chart-grid div {
-      border-top: 1px solid rgba(15, 23, 42, 0.9);
+      border-top: 1px solid rgba(32, 21, 16, 0.95);
       height: 25%;
     }
 
@@ -434,7 +448,7 @@
       position: absolute;
       inset: 14px 12px 14px 12px;
       border-radius: 999px;
-      border: 1.8px solid rgba(248, 250, 252, 0.82);
+      border: 1.8px solid rgba(249, 243, 234, 0.9);
       transform: skewX(-12deg);
       clip-path: polygon(0 55%, 22% 60%, 42% 38%, 60% 52%, 78% 32%, 100% 40%);
     }
@@ -446,12 +460,12 @@
       font-size: 10px;
       border-radius: 999px;
       padding: 3px 7px;
-      background: rgba(15, 23, 42, 0.92);
-      border: 1px solid rgba(148, 163, 184, 0.8);
-      color: #e5e7eb;
+      background: rgba(12, 7, 5, 0.96);
+      border: 1px solid rgba(201, 145, 97, 0.9);
+      color: var(--text);
     }
 
-    /* Sections */
+    /* GENERIC SECTIONS */
 
     section {
       padding: 46px 0 10px;
@@ -484,32 +498,15 @@
       margin-bottom: 4px;
     }
 
-    /* Problem */
-
-    .problem-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    @media (max-width: 960px) {
-      .problem-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 640px) {
-      .problem-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
+    /* CARDS */
 
     .card {
-      background: radial-gradient(circle at top left, #0b1120, #020617);
+      background:
+        radial-gradient(circle at top left, #2c1a13, #120c09);
       border-radius: var(--radius-lg);
       padding: 14px 14px 16px;
       border: 1px solid var(--border);
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.85);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
       font-size: 13px;
       position: relative;
       overflow: hidden;
@@ -532,24 +529,48 @@
       font-size: 11px;
       padding: 3px 8px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(22, 12, 8, 0.96);
+      border: 1px solid rgba(176, 129, 92, 0.9);
       color: var(--muted);
     }
 
-    /* Solution */
+    /* LAYOUT GRIDS */
 
-    .solution-grid {
+    .problem-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    @media (max-width: 960px) {
+      .problem-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .problem-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .solution-grid,
+    .how-grid,
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
       gap: 18px;
     }
 
     @media (max-width: 880px) {
-      .solution-grid {
+      .solution-grid,
+      .how-grid,
+      .roadmap-grid {
         grid-template-columns: minmax(0, 1fr);
       }
     }
+
+    /* SOLUTION PILL ROWS */
 
     .solution-pill-row {
       display: grid;
@@ -560,11 +581,17 @@
       font-size: 11px;
     }
 
+    @media (max-width: 640px) {
+      .solution-pill-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
     .solution-pill {
       border-radius: 999px;
       padding: 6px 10px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(176, 129, 92, 0.8);
+      background: rgba(15, 9, 7, 0.98);
       display: flex;
       flex-direction: column;
       gap: 1px;
@@ -587,19 +614,7 @@
       margin-top: 6px;
     }
 
-    /* How it works */
-
-    .how-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
-      gap: 18px;
-    }
-
-    @media (max-width: 880px) {
-      .how-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
+    /* TIMELINES */
 
     .timeline {
       display: grid;
@@ -621,8 +636,10 @@
       display: grid;
       place-items: center;
       font-size: 11px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: radial-gradient(circle at top, #4f46e5, #020617);
+      border: 1px solid rgba(176, 129, 92, 0.9);
+      background: radial-gradient(circle at top, var(--accent), #3a1e11);
+      color: #2a1309;
+      font-weight: 600;
     }
 
     .timeline-title {
@@ -636,7 +653,7 @@
       color: var(--muted);
     }
 
-    /* Metrics / Market */
+    /* METRICS */
 
     .metrics-grid {
       display: grid;
@@ -654,6 +671,7 @@
       font-size: 24px;
       font-weight: 600;
       margin-bottom: 4px;
+      color: var(--accent-strong);
     }
 
     .metric-card-label {
@@ -669,22 +687,10 @@
       color: var(--muted);
     }
 
-    /* Roadmap */
-
-    .roadmap-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
-      gap: 18px;
-    }
-
-    @media (max-width: 880px) {
-      .roadmap-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
+    /* ROADMAP */
 
     .roadmap-timeline {
-      border-left: 1px dashed rgba(148, 163, 184, 0.5);
+      border-left: 1px dashed rgba(176, 129, 92, 0.8);
       padding-left: 14px;
       margin-top: 8px;
       display: grid;
@@ -702,8 +708,8 @@
       width: 9px;
       height: 9px;
       border-radius: 999px;
-      border: 2px solid #22c1c3;
-      background: #020617;
+      border: 2px solid var(--accent-strong);
+      background: #120c09;
       position: absolute;
       left: -19px;
       top: 3px;
@@ -728,7 +734,7 @@
       color: var(--muted);
     }
 
-    /* Team */
+    /* TEAM */
 
     .team-grid {
       display: grid;
@@ -752,12 +758,15 @@
       width: 64px;
       height: 64px;
       border-radius: 999px;
-      background: radial-gradient(circle at top, #22c1c3, #4f46e5);
+      background:
+        radial-gradient(circle at 20% 0, var(--accent-strong), var(--accent));
       margin-bottom: 10px;
       display: grid;
       place-items: center;
       font-weight: 600;
       font-size: 18px;
+      color: #2b140a;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.85);
     }
 
     .team-role {
@@ -779,20 +788,21 @@
       color: var(--muted);
     }
 
-    /* CTA / Footer */
+    /* CTA / FOOTER */
 
     .cta {
       margin-top: 36px;
       border-radius: var(--radius-xl);
-      background: radial-gradient(circle at top left, #1e293b, #020617);
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      background:
+        radial-gradient(circle at top left, #2e1b13, #0e0907);
+      border: 1px solid rgba(176, 129, 92, 0.9);
       padding: 22px 20px;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       gap: 18px;
       align-items: center;
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
     }
 
     .cta-title {
@@ -836,12 +846,10 @@
   <header>
     <div class="container nav">
       <a href="#top" class="logo">
-        <div class="logo-mark">
-          <span><img src="logo.png" alt="Rusty Element"></span>
-        </div>
+        <div class="logo-mark"><img src="logo.png" alt="Rusty Element"></div>
         <div>
-          Rusty Element<br />
-          <span style="font-size:11px; color:var(--muted)">SaNAI Service</span>
+          RustyElement<br />
+          <span class="logo-sub">SaNAI · Safety Net for AI</span>
         </div>
       </a>
       <nav class="nav-links">
@@ -853,10 +861,12 @@
         <a href="#team">Team</a>
       </nav>
       <div class="nav-cta">
-        <button class="btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        <button class="btn"
+          onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
           Download deck
         </button>
-        <button class="btn btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        <button class="btn btn-primary"
+          onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
           Request early access
         </button>
       </div>
@@ -878,25 +888,28 @@
           </h1>
           <p class="hero-sub">
             SaNAI aggregates multiple GenAI models, records every interaction on-chain, and
-            connects claims to a DAO of experts. So you can deploy AI with the same confidence
-            as the automotive and insurance industries once unlocked for cars.
+            connects claims to a DAO of experts. Deploy AI with the same confidence
+            that insurance once unlocked for cars.
           </p>
           <p class="hero-sub-kr">
             SaNAI는 여러 개의 생성형 AI를 한 번에 사용하고, 모든 질의·응답을 블록체인에 기록하며,
-            손해 발생 시 전문가 DAO가 보상 여부와 규모를 결정하는 <strong>AI 세이프티넷 플랫폼</strong>입니다.
+            손해 발생 시 전문가 DAO가 보상 여부와 규모를 결정하는
+            <strong>AI 세이프티넷 플랫폼</strong>입니다.
           </p>
 
           <div class="hero-cta-row">
-            <button class="btn btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+            <button class="btn btn-primary"
+              onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
               Talk to our team
             </button>
-            <button class="btn" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">
+            <button class="btn"
+              onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">
               See how SaNAI works
             </button>
           </div>
           <div class="hero-note">
-            <strong>Flexible per-transaction deductible.</strong> Transition-ready to full AI
-            (re)insurance.
+            <strong>Flexible per-transaction deductible.</strong>
+            Designed to evolve into full AI (re)insurance.
           </div>
 
           <div class="hero-metrics">
@@ -962,17 +975,14 @@
                 </div>
                 <div class="hero-claim">
                   <strong>Every answer is recorded</strong> immutably via blockchain &amp; IPFS — so
-                  root cause analysis and recourse are finally possible.
+                  root-cause analysis and recourse are finally possible.
                 </div>
               </div>
               <div class="hero-card-col">
                 <div class="hero-col-title">Coverage snapshot</div>
                 <div class="hero-chart">
                   <div class="hero-chart-grid">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
+                    <div></div><div></div><div></div><div></div>
                   </div>
                   <div class="hero-chart-line"></div>
                   <div class="hero-chart-pill">
@@ -1010,8 +1020,8 @@
             <div class="card-tag">Risk</div>
             <h3>Unpredictable outputs</h3>
             <p>
-              GenAI models can hallucinate, misinterpret edge cases, or amplify bias — creating
-              hard-to-price legal and operational risk for enterprises.
+              GenAI models can hallucinate, misinterpret edge cases, or amplify bias —
+              creating hard-to-price legal and operational risk for enterprises.
             </p>
           </article>
 
@@ -1026,7 +1036,7 @@
 
           <article class="card">
             <div class="card-tag">Forensics</div>
-            <h3>Root cause obscurity</h3>
+            <h3>Root-cause obscurity</h3>
             <p>
               Tuning, prompts, plugins, sensor data and runtime all interact.
               Pinpointing what failed — and how to prevent it — is rarely possible today.
@@ -1051,7 +1061,7 @@
         <div class="section-header">
           <div>
             <div class="pill-label">Solution</div>
-            <h2 class="section-title">A safety net layer for every AI interaction.</h2>
+            <h2 class="section-title">A safety-net layer under every AI interaction.</h2>
           </div>
           <p class="section-kicker">
             SaNAI combines multi-model access, immutable logging, and mutual-aid style coverage —
@@ -1081,7 +1091,7 @@
             <div class="solution-pill-row">
               <div class="solution-pill">
                 <span>DAO claims</span>
-                <span>Experts assess eligibility &amp; amount of compensation.</span>
+                <span>Experts assess eligibility &amp; compensation.</span>
               </div>
               <div class="solution-pill">
                 <span>Data value</span>
@@ -1095,8 +1105,7 @@
 
             <p class="solution-note">
               Users gain controlled access to multiple models, transparent context windows, and a
-              clear path to recourse when things go wrong — all without locking into a single
-              vendor.
+              clear path to recourse when things go wrong — all without locking into a single vendor.
             </p>
           </article>
 
@@ -1220,7 +1229,7 @@
                 <div>
                   <div class="timeline-title">Payout from mutual fund</div>
                   <div class="timeline-body">
-                    Approved claims are paid out from pooled fees (24h / 1M token networks), with
+                    Approved claims are paid out from pooled fees, with
                     decisions recorded openly for future precedent and training.
                   </div>
                 </div>
@@ -1305,8 +1314,11 @@
             </ul>
 
             <p style="font-size:12px; color:var(--muted); margin-top:12px;">
-              Budget allocation: <strong>R&amp;D 40%</strong>, <strong>Marketing &amp; Networking 35%</strong>,
-              <strong>Operations 20%</strong>, <strong>Contingency 5%</strong>.
+              Budget allocation:
+              <strong>R&amp;D 40%</strong>,
+              <strong>Marketing &amp; Networking 35%</strong>,
+              <strong>Operations 20%</strong>,
+              <strong>Contingency 5%</strong>.
             </p>
           </article>
 
@@ -1360,7 +1372,7 @@
             <h2 class="section-title">Experts at the intersection of AI, risk &amp; finance.</h2>
           </div>
           <p class="section-kicker">
-            Rusty Element brings together leaders from AI research, insurance, blockchain, and
+            RustyElement brings together leaders from AI research, insurance, blockchain, and
             regulatory policy to design a system the whole industry can trust.
           </p>
         </div>
@@ -1420,7 +1432,7 @@
               program, technical architecture, and partnership options.
             </div>
           </div>
-          <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="display:flex; flex-direction:column; gap:8px; min-width:220px;">
             <button class="btn btn-primary">
               Book a discovery call
             </button>
@@ -1448,7 +1460,6 @@
   </footer>
 
   <script>
-    // Simple current year in footer
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
