@@ -533,3 +533,24 @@ footer {
         font-size: 1.75rem !important;
     }
 }
+/* CONSTRUCTION PAGE */
+.construction-hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.construction-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    background: rgba(210, 105, 48, 0.1);
+    border: 1px solid var(--accent-border);
+    border-radius: 50%;
+    margin-bottom: 32px;
+    color: var(--accent-rust);
+    box-shadow: 0 0 40px var(--accent-glow);
+}
