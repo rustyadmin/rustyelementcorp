@@ -1,854 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>RustyElement · SaNAI – Safety Net for AI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta
-    name="description"
-    content="RustyElement SaNAI – a safety net for Generative AI: multi-model aggregation, on-chain audit trails, and DAO-based compensation for AI-caused damage."
-  />
-  <style>
-    :root {
-      /* COLOR SYSTEM – RUST / BROWN ONLY */
-      --bg: #0b0908;
-      --bg-alt: #15100f;
-      --bg-soft: #1f1714;
-      --card: #1c1411;
-      --card-soft: #251913;
-      --accent: #d26930;             /* rust orange */
-      --accent-soft: rgba(210, 105, 48, 0.2);
-      --accent-strong: #f0b56b;      /* copper highlight */
-      --text: #f9f3ea;               /* warm off-white */
-      --muted: #b8aa9a;              /* warm grey */
-      --border: rgba(120, 90, 65, 0.65);
-      --border-soft: rgba(78, 57, 42, 0.9);
-      --radius-lg: 18px;
-      --radius-xl: 26px;
-      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.85);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top, #3b2317 0, #0b0908 52%, #050302 100%);
-      color: var(--text);
-      line-height: 1.6;
-      scroll-behavior: smooth;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      backdrop-filter: blur(20px);
-      background: linear-gradient(
-        to bottom,
-        rgba(10, 7, 6, 0.96),
-        rgba(10, 7, 6, 0.86),
-        transparent
-      );
-      border-bottom: 1px solid rgba(70, 49, 35, 0.9);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-    }
-
-    .logo-mark {
-      width: 60px;
-      height: 60px;
-    
-      display: grid;
-      place-items: center;
-    }
-
-    .logo-sub {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 22px;
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .nav-links a {
-      position: relative;
-      padding-bottom: 4px;
-    }
-
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      height: 1.5px;
-      background: linear-gradient(
-        to right,
-        var(--accent),
-        var(--accent-strong)
-      );
-      transition: width 0.2s ease;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .nav-cta {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .btn {
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 13px;
-      border: 1px solid var(--border);
-      background: rgba(11, 8, 6, 0.95);
-      color: var(--text);
-      cursor: pointer;
-      transition: background 0.18s ease, border-color 0.18s ease,
-        transform 0.08s ease, box-shadow 0.18s ease;
-      white-space: nowrap;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      border: none;
-      box-shadow: 0 14px 40px rgba(143, 72, 33, 0.7);
-      color: #2a1309;
-      font-weight: 600;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      border-color: var(--accent-strong);
-      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.8);
-    }
-
-    main {
-      padding-bottom: 80px;
-    }
-
-    /* HERO */
-
-    .hero {
-      padding: 72px 0 40px;
-    }
-
-    .hero-grid {
-      display: grid;
-      gap: 40px;
-      grid-template-columns: minmax(0, 3.2fr) minmax(0, 3fr);
-      align-items: center;
-    }
-
-    @media (max-width: 880px) {
-      .hero-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .nav-links {
-        display: none;
-      }
-      header {
-        background: rgba(8, 5, 4, 0.96);
-      }
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 9px 4px 4px;
-      border-radius: 999px;
-      border: 1px solid rgba(120, 90, 65, 0.85);
-      background: radial-gradient(circle at top left, #2d1a12, #0b0908);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      margin-bottom: 14px;
-    }
-
-    .eyebrow-pill {
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: radial-gradient(circle at top, var(--accent), var(--accent-strong));
-      color: #2a1309;
-      font-weight: 700;
-    }
-
-    .hero h1 {
-      font-size: clamp(36px, 4vw, 46px);
-      letter-spacing: -0.04em;
-      margin-bottom: 12px;
-    }
-
-    .hero h1 span {
-      background: linear-gradient(120deg, var(--accent-strong), #fff4db);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .hero-sub {
-      max-width: 540px;
-      color: var(--muted);
-      font-size: 15px;
-      margin-bottom: 24px;
-    }
-
-    .hero-sub-kr {
-      margin-top: 4px;
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .hero-cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 18px;
-    }
-
-    .hero-note {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .hero-note strong {
-      color: var(--accent-strong);
-    }
-
-    .hero-metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 26px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .hero-metric {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(21, 13, 10, 0.96);
-      border: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 160px;
-    }
-
-    .hero-metric span:first-child {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .hero-metric span:last-child {
-      font-weight: 600;
-      color: var(--text);
-      font-size: 14px;
-    }
-
-    /* HERO CARD */
-
-    .hero-card {
-      border-radius: var(--radius-xl);
-      background:
-        radial-gradient(circle at top, #2f1b13, #0b0908);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-soft);
-      padding: 18px 18px 14px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .badge-top {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      font-size: 11px;
-      background: rgba(10, 6, 4, 0.9);
-      border-radius: 999px;
-      padding: 4px 9px;
-      border: 1px solid rgba(176, 129, 92, 0.9);
-      color: var(--muted);
-    }
-
-    .hero-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      gap: 10px;
-    }
-
-    .hero-card-title {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .hero-card-title strong {
-      color: var(--text);
-    }
-
-    .hero-card-tags {
-      display: flex;
-      gap: 6px;
-      font-size: 11px;
-    }
-
-    .hero-card-tag {
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: rgba(22, 12, 8, 0.96);
-      border: 1px solid rgba(176, 129, 92, 0.9);
-      color: var(--muted);
-    }
-
-    .hero-card-body {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
-      gap: 14px;
-    }
-
-    @media (max-width: 640px) {
-      .hero-card-body {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .hero-card-col {
-      background: var(--bg-soft);
-      border-radius: var(--radius-lg);
-      padding: 10px 11px;
-      border: 1px solid var(--border-soft);
-      font-size: 11px;
-    }
-
-    .hero-col-title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .hero-ai-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 5px 0;
-      border-bottom: 1px dashed rgba(78, 57, 42, 0.9);
-    }
-
-    .hero-ai-row:last-child {
-      border-bottom: none;
-    }
-
-    .hero-ai-name {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .hero-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 20% 0, var(--accent-strong), var(--accent));
-    }
-
-    .hero-ai-meta {
-      font-size: 10px;
-      color: var(--muted);
-      text-align: right;
-    }
-
-    .hero-claim {
-      margin-top: 6px;
-      padding-top: 6px;
-      border-top: 1px dashed rgba(78, 57, 42, 0.9);
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .hero-claim strong {
-      color: var(--accent-strong);
-    }
-
-    .hero-chart {
-      height: 120px;
-      border-radius: 16px;
-      background:
-        radial-gradient(circle at top left, rgba(210, 105, 48, 0.65), transparent),
-        radial-gradient(circle at bottom right, rgba(65, 37, 24, 0.95), transparent),
-        #0b0908;
-      position: relative;
-      overflow: hidden;
-      margin-top: 6px;
-    }
-
-    .hero-chart-grid {
-      position: absolute;
-      inset: 10px 10px 14px 12px;
-      opacity: 0.5;
-    }
-
-    .hero-chart-grid div {
-      border-top: 1px solid rgba(32, 21, 16, 0.95);
-      height: 25%;
-    }
-
-    .hero-chart-line {
-      position: absolute;
-      inset: 14px 12px 14px 12px;
-      border-radius: 999px;
-      border: 1.8px solid rgba(249, 243, 234, 0.9);
-      transform: skewX(-12deg);
-      clip-path: polygon(0 55%, 22% 60%, 42% 38%, 60% 52%, 78% 32%, 100% 40%);
-    }
-
-    .hero-chart-pill {
-      position: absolute;
-      bottom: 12px;
-      right: 14px;
-      font-size: 10px;
-      border-radius: 999px;
-      padding: 3px 7px;
-      background: rgba(12, 7, 5, 0.96);
-      border: 1px solid rgba(201, 145, 97, 0.9);
-      color: var(--text);
-    }
-
-    /* GENERIC SECTIONS */
-
-    section {
-      padding: 46px 0 10px;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 24px;
-      margin-bottom: 24px;
-    }
-
-    .section-title {
-      font-size: 22px;
-      letter-spacing: -0.03em;
-    }
-
-    .section-kicker {
-      font-size: 13px;
-      color: var(--muted);
-      max-width: 420px;
-    }
-
-    .pill-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    /* CARDS */
-
-    .card {
-      background:
-        radial-gradient(circle at top left, #2c1a13, #120c09);
-      border-radius: var(--radius-lg);
-      padding: 14px 14px 16px;
-      border: 1px solid var(--border);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
-      font-size: 13px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card h3 {
-      font-size: 15px;
-      margin-bottom: 6px;
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .card-tag {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(22, 12, 8, 0.96);
-      border: 1px solid rgba(176, 129, 92, 0.9);
-      color: var(--muted);
-    }
-
-    /* LAYOUT GRIDS */
-
-    .problem-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    @media (max-width: 960px) {
-      .problem-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 640px) {
-      .problem-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .solution-grid,
-    .how-grid,
-    .roadmap-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-      gap: 18px;
-    }
-
-    @media (max-width: 880px) {
-      .solution-grid,
-      .how-grid,
-      .roadmap-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    /* SOLUTION PILL ROWS */
-
-    .solution-pill-row {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-      margin-bottom: 6px;
-      font-size: 11px;
-    }
-
-    @media (max-width: 640px) {
-      .solution-pill-row {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .solution-pill {
-      border-radius: 999px;
-      padding: 6px 10px;
-      border: 1px solid rgba(176, 129, 92, 0.8);
-      background: rgba(15, 9, 7, 0.98);
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
-
-    .solution-pill span:first-child {
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    .solution-pill span:last-child {
-      font-size: 12px;
-    }
-
-    .solution-note {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 6px;
-    }
-
-    /* TIMELINES */
-
-    .timeline {
-      display: grid;
-      gap: 12px;
-      font-size: 13px;
-    }
-
-    .timeline-item {
-      display: grid;
-      grid-template-columns: 26px minmax(0, 1fr);
-      gap: 10px;
-      align-items: flex-start;
-    }
-
-    .timeline-badge {
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      font-size: 11px;
-      border: 1px solid rgba(176, 129, 92, 0.9);
-      background: radial-gradient(circle at top, var(--accent), #3a1e11);
-      color: #2a1309;
-      font-weight: 600;
-    }
-
-    .timeline-title {
-      font-weight: 600;
-      margin-bottom: 3px;
-      font-size: 13px;
-    }
-
-    .timeline-body {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* METRICS */
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    @media (max-width: 880px) {
-      .metrics-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .metric-card-number {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: var(--accent-strong);
-    }
-
-    .metric-card-label {
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 4px;
-    }
-
-    .metric-card-desc {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    /* ROADMAP */
-
-    .roadmap-timeline {
-      border-left: 1px dashed rgba(176, 129, 92, 0.8);
-      padding-left: 14px;
-      margin-top: 8px;
-      display: grid;
-      gap: 14px;
-      font-size: 13px;
-    }
-
-    .roadmap-item {
-      position: relative;
-      padding-left: 8px;
-    }
-
-    .roadmap-item::before {
-      content: "";
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      border: 2px solid var(--accent-strong);
-      background: #120c09;
-      position: absolute;
-      left: -19px;
-      top: 3px;
-    }
-
-    .roadmap-item h4 {
-      font-size: 13px;
-      margin-bottom: 2px;
-    }
-
-    .roadmap-item span {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.13em;
-      color: var(--muted);
-      display: inline-block;
-      margin-bottom: 3px;
-    }
-
-    .roadmap-item p {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* TEAM */
-
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    @media (max-width: 960px) {
-      .team-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 640px) {
-      .team-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 20% 0, var(--accent-strong), var(--accent));
-      margin-bottom: 10px;
-      display: grid;
-      place-items: center;
-      font-weight: 600;
-      font-size: 18px;
-      color: #2b140a;
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.85);
-    }
-
-    .team-role {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted);
-      margin-bottom: 3px;
-    }
-
-    .team-name {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .team-bio {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* CTA / FOOTER */
-
-    .cta {
-      margin-top: 36px;
-      border-radius: var(--radius-xl);
-      background:
-        radial-gradient(circle at top left, #2e1b13, #0e0907);
-      border: 1px solid rgba(176, 129, 92, 0.9);
-      padding: 22px 20px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 18px;
-      align-items: center;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
-    }
-
-    .cta-title {
-      font-size: 18px;
-      margin-bottom: 4px;
-    }
-
-    .cta-sub {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    footer {
-      padding: 26px 0 40px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    footer .footer-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 16px;
-    }
-
-    .footer-links a {
-      text-decoration: underline;
-      text-decoration-style: dotted;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 3px;
-    }
-  </style>
+  <meta name="description"
+    content="RustyElement SaNAI – a safety net for Generative AI: multi-model aggregation, on-chain audit trails, and DAO-based compensation for AI-caused damage." />
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <header>
     <div class="container nav">
       <a href="#top" class="logo">
-        <div class="logo-mark"><img src="logo.png" alt="Rusty Element"></div>
-        <div>
-          RustyElement<br />
+        <div class="logo-mark"><img src="logo.png" alt="Rusty Element Logo"></div>
+        <div class="logo-text">
+          <span>RustyElement</span>
           <span class="logo-sub">SaNAI · Safety Net for AI</span>
         </div>
       </a>
@@ -858,10 +26,9 @@
         <a href="#how">How it works</a>
         <a href="#market">Market</a>
         <a href="#roadmap">Roadmap</a>
-        <a href="#team">Team</a>
       </nav>
       <div class="nav-cta">
-        <button class="btn"
+        <button class="btn btn-secondary" style="margin-right: 8px;"
           onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
           Download deck
         </button>
@@ -877,123 +44,94 @@
     <!-- HERO -->
     <section class="hero">
       <div class="container hero-grid">
-        <div>
-          <div class="eyebrow">
-            <span class="eyebrow-pill">Safety Net for AI</span>
-            RUSTY ELEMENT INC.
+        <div class="hero-content">
+          <div class="section-eyebrow">
+            Safety Net for AI &nbsp;·&nbsp; Rusty Element Inc.
           </div>
-          <h1>
+          <h1 class="hero-title">
             Pay-as-you-go<br />
-            <span>liability protection</span> for Generative AI.
+            <span>liability protection</span><br />
+            for Generative AI.
           </h1>
-          <p class="hero-sub">
-            SaNAI aggregates multiple GenAI models, records every interaction on-chain, and
-            connects claims to a DAO of experts. Deploy AI with the same confidence
-            that insurance once unlocked for cars.
-          </p>
-          <p class="hero-sub-kr">
-            SaNAI는 여러 개의 생성형 AI를 한 번에 사용하고, 모든 질의·응답을 블록체인에 기록하며,
-            손해 발생 시 전문가 DAO가 보상 여부와 규모를 결정하는
-            <strong>AI 세이프티넷 플랫폼</strong>입니다.
+          <p class="hero-subtitle">
+            SaNAI aggregates multiple GenAI models, records every interaction on-chain, and connects claims to a DAO of
+            experts.
+            <span style="display:block; margin-top: 8px; font-size: 0.9em; opacity: 0.8;">
+              SaNAI는 여러 개의 생성형 AI를 한 번에 사용하고, 모든 질의·응답을 블록체인에 기록하며, 손해 발생 시 전문가 DAO가 보상을 결정하는 AI 세이프티넷 플랫폼입니다.
+            </span>
           </p>
 
-          <div class="hero-cta-row">
+          <div class="hero-actions">
             <button class="btn btn-primary"
               onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
               Talk to our team
             </button>
-            <button class="btn"
+            <button class="btn btn-secondary"
               onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">
               See how SaNAI works
             </button>
           </div>
-          <div class="hero-note">
-            <strong>Flexible per-transaction deductible.</strong>
-            Designed to evolve into full AI (re)insurance.
-          </div>
 
           <div class="hero-metrics">
-            <div class="hero-metric">
+            <div class="metric-item">
               <span>TAM</span>
-              <span>25M users · $23B services</span>
+              <strong>$23B</strong>
             </div>
-            <div class="hero-metric">
-              <span>Year 2 target</span>
-              <span>$0.5B annual revenue</span>
+            <div class="metric-item">
+              <span>Target Rev</span>
+              <strong>$0.5B</strong>
             </div>
-            <div class="hero-metric">
-              <span>Data flywheel</span>
-              <span>Q&A, feedback &amp; RLHF streams</span>
+            <div class="metric-item">
+              <span>Coverage</span>
+              <strong>DAO-Verified</strong>
             </div>
           </div>
         </div>
 
-        <div>
-          <div class="hero-card">
-            <div class="badge-top">On-chain audit trail</div>
-            <div class="hero-card-header">
-              <div class="hero-card-title">
-                Query: <strong>“Approve this loan portfolio?”</strong>
-              </div>
-              <div class="hero-card-tags">
-                <span class="hero-card-tag">Multi GenAI</span>
-                <span class="hero-card-tag">DAO claims</span>
+        <div class="hero-visual">
+          <div class="visual-card">
+            <div style="display:flex; justify-content:space-between; margin-bottom: 24px; align-items:center;">
+              <div
+                style="font-size:0.85rem; color:var(--accent-rust); text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
+                On-chain Audit</div>
+              <div style="font-size:0.75rem; color:var(--text-tertiary);">Block #19284...</div>
+            </div>
+
+            <div style="border-left: 2px solid var(--border-highlight); padding-left: 16px; margin-bottom: 24px;">
+              <div style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:4px;">Query</div>
+              <div style="font-size:1.1rem; color:var(--text-primary); font-weight:500;">"Approve this loan portfolio?"
               </div>
             </div>
-            <div class="hero-card-body">
-              <div class="hero-card-col">
-                <div class="hero-col-title">Model responses</div>
-                <div class="hero-ai-row">
-                  <div class="hero-ai-name">
-                    <div class="hero-dot"></div>
-                    <span>Model A</span>
-                  </div>
-                  <div class="hero-ai-meta">
-                    Risk score: 0.34<br />
-                    Conf: 82%
-                  </div>
+
+            <div style="display:grid; gap: 12px;">
+              <!-- Model A -->
+              <div
+                style="background:rgba(255,255,255,0.03); padding:12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <div style="width:8px; height:8px; background:var(--accent-rust); border-radius:50%;"></div>
+                  <span style="font-size:0.9rem;">Model A</span>
                 </div>
-                <div class="hero-ai-row">
-                  <div class="hero-ai-name">
-                    <div class="hero-dot"></div>
-                    <span>Model B</span>
-                  </div>
-                  <div class="hero-ai-meta">
-                    Risk score: 0.26<br />
-                    Conf: 88%
-                  </div>
-                </div>
-                <div class="hero-ai-row">
-                  <div class="hero-ai-name">
-                    <div class="hero-dot"></div>
-                    <span>Model C</span>
-                  </div>
-                  <div class="hero-ai-meta">
-                    Risk score: 0.41<br />
-                    Conf: 76%
-                  </div>
-                </div>
-                <div class="hero-claim">
-                  <strong>Every answer is recorded</strong> immutably via blockchain &amp; IPFS — so
-                  root-cause analysis and recourse are finally possible.
+                <div style="text-align:right; font-size:0.8rem; color:var(--text-secondary);">
+                  Risk: <span style="color:#ef4444">High</span>
                 </div>
               </div>
-              <div class="hero-card-col">
-                <div class="hero-col-title">Coverage snapshot</div>
-                <div class="hero-chart">
-                  <div class="hero-chart-grid">
-                    <div></div><div></div><div></div><div></div>
-                  </div>
-                  <div class="hero-chart-line"></div>
-                  <div class="hero-chart-pill">
-                    24h / 1M tokens<br />
-                    pooled mutual coverage
-                  </div>
+
+              <!-- Model B -->
+              <div
+                style="background:rgba(255,255,255,0.03); padding:12px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <div style="width:8px; height:8px; background:var(--text-tertiary); border-radius:50%;"></div>
+                  <span style="font-size:0.9rem;">Model B</span>
                 </div>
-                <div class="hero-claim">
-                  <strong>DAO validators</strong> verify loss, match it against the on-chain history,
-                  and allocate compensation from the mutual fund.
+                <div style="text-align:right; font-size:0.8rem; color:var(--text-secondary);">
+                  Risk: <span style="color:#eab308">Med</span>
                 </div>
+              </div>
+
+              <!-- Coverage Claim -->
+              <div
+                style="margin-top: 12px; padding-top:12px; border-top:1px dashed var(--border-subtle); font-size:0.8rem; color:var(--text-secondary);">
+                <strong style="color:var(--accent-rust);">Immutable Record:</strong> Responses hashed & stored via IPFS.
               </div>
             </div>
           </div>
@@ -1002,11 +140,12 @@
     </section>
 
     <!-- PROBLEM -->
+    <!-- PROBLEM -->
     <section id="problem">
       <div class="container">
         <div class="section-header">
           <div>
-            <div class="pill-label">Problem</div>
+            <span class="section-eyebrow">Problem</span>
             <h2 class="section-title">AI is shipping faster than liability.</h2>
           </div>
           <p class="section-kicker">
@@ -1015,9 +154,18 @@
           </p>
         </div>
 
-        <div class="problem-grid">
+        <div class="grid-2">
           <article class="card">
-            <div class="card-tag">Risk</div>
+            <div class="card-icon">
+              <!-- Simple SVG for Risk -->
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                </path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
             <h3>Unpredictable outputs</h3>
             <p>
               GenAI models can hallucinate, misinterpret edge cases, or amplify bias —
@@ -1026,7 +174,16 @@
           </article>
 
           <article class="card">
-            <div class="card-tag">Liability</div>
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
             <h3>Accountability vacuum</h3>
             <p>
               When harm occurs there is no standard recourse: who pays —
@@ -1035,7 +192,13 @@
           </article>
 
           <article class="card">
-            <div class="card-tag">Forensics</div>
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
             <h3>Root-cause obscurity</h3>
             <p>
               Tuning, prompts, plugins, sensor data and runtime all interact.
@@ -1044,7 +207,14 @@
           </article>
 
           <article class="card">
-            <div class="card-tag">Market</div>
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </div>
             <h3>No neutral benchmark</h3>
             <p>
               Model providers lack a shared environment to compare outputs on identical queries,
@@ -1056,11 +226,12 @@
     </section>
 
     <!-- SOLUTION -->
+    <!-- SOLUTION -->
     <section id="solution">
       <div class="container">
         <div class="section-header">
           <div>
-            <div class="pill-label">Solution</div>
+            <span class="section-eyebrow">Solution</span>
             <h2 class="section-title">A safety-net layer under every AI interaction.</h2>
           </div>
           <p class="section-kicker">
@@ -1069,41 +240,42 @@
           </p>
         </div>
 
-        <div class="solution-grid">
+        <div class="grid-2">
           <article class="card">
-            <h3>Core capabilities</h3>
+            <h3 style="margin-bottom:24px;">Core capabilities</h3>
 
-            <div class="solution-pill-row">
-              <div class="solution-pill">
-                <span>Liability</span>
-                <span>Pay-as-you-go damage coverage per query.</span>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:var(--radius-sm);">
+                <div
+                  style="color:var(--accent-rust); font-size:0.75rem; text-transform:uppercase; font-weight:600; margin-bottom:4px;">
+                  Liability</div>
+                <div style="font-size:0.9rem; color:var(--text-secondary);">Pay-as-you-go damage coverage per query.
+                </div>
               </div>
-              <div class="solution-pill">
-                <span>Diversity</span>
-                <span>Aggregate responses from multiple GenAI models.</span>
+              <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:var(--radius-sm);">
+                <div
+                  style="color:var(--accent-rust); font-size:0.75rem; text-transform:uppercase; font-weight:600; margin-bottom:4px;">
+                  Diversity</div>
+                <div style="font-size:0.9rem; color:var(--text-secondary);">Aggregate responses from multiple GenAI
+                  models.</div>
               </div>
-              <div class="solution-pill">
-                <span>Immutable</span>
-                <span>Blockchain &amp; IPFS audit trail for every interaction.</span>
+              <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:var(--radius-sm);">
+                <div
+                  style="color:var(--accent-rust); font-size:0.75rem; text-transform:uppercase; font-weight:600; margin-bottom:4px;">
+                  Immutable</div>
+                <div style="font-size:0.9rem; color:var(--text-secondary);">Blockchain &amp; IPFS audit trail for every
+                  interaction.</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:var(--radius-sm);">
+                <div
+                  style="color:var(--accent-rust); font-size:0.75rem; text-transform:uppercase; font-weight:600; margin-bottom:4px;">
+                  DAO claims</div>
+                <div style="font-size:0.9rem; color:var(--text-secondary);">Experts assess eligibility &amp;
+                  compensation.</div>
               </div>
             </div>
 
-            <div class="solution-pill-row">
-              <div class="solution-pill">
-                <span>DAO claims</span>
-                <span>Experts assess eligibility &amp; compensation.</span>
-              </div>
-              <div class="solution-pill">
-                <span>Data value</span>
-                <span>Label-ready Q&amp;A &amp; feedback streams.</span>
-              </div>
-              <div class="solution-pill">
-                <span>Insurance</span>
-                <span>Data foundation for AI (re)insurance products.</span>
-              </div>
-            </div>
-
-            <p class="solution-note">
+            <p style="margin-top: 24px; font-size:0.9rem; border-top:1px solid var(--border-subtle); padding-top:16px;">
               Users gain controlled access to multiple models, transparent context windows, and a
               clear path to recourse when things go wrong — all without locking into a single vendor.
             </p>
@@ -1120,7 +292,8 @@
               product: any model, any channel, one shared infrastructure for trust, audit and
               compensation.
             </p>
-            <ul style="margin-top:12px; padding-left:18px; color:var(--muted); font-size:13px;">
+            <ul
+              style="margin-top:24px; padding-left:20px; color:var(--text-secondary); font-size:0.95rem; display:flex; flex-direction:column; gap:8px;">
               <li>Supports multi-LLM orchestration from day one.</li>
               <li>Neutral DAO-based adjudication of claims.</li>
               <li>Aligned incentives via mutual fund + RLHF data revenue.</li>
@@ -1131,11 +304,12 @@
     </section>
 
     <!-- HOW IT WORKS -->
+    <!-- HOW IT WORKS -->
     <section id="how">
       <div class="container">
         <div class="section-header">
           <div>
-            <div class="pill-label">How it works</div>
+            <span class="section-eyebrow">How it works</span>
             <h2 class="section-title">From query to compensation.</h2>
           </div>
           <p class="section-kicker">
@@ -1144,48 +318,55 @@
           </p>
         </div>
 
-        <div class="how-grid">
+        <div class="grid-2">
           <article class="card">
             <h3>1. Using Multiple GenAI Services</h3>
-            <div class="timeline" style="margin-top:12px;">
-              <div class="timeline-item">
-                <div class="timeline-badge">1</div>
+            <div style="margin-top:24px; display:grid; gap:20px;">
+              <div style="display:flex; gap:16px;">
+                <div
+                  style="width:28px; height:28px; border-radius:50%; background:var(--accent-rust); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.9rem; flex-shrink:0;">
+                  1</div>
                 <div>
-                  <div class="timeline-title">User submits a professional query</div>
-                  <div class="timeline-body">
-                    The user sends a query through SaNAI — for example, legal, financial, or
-                    operational questions where errors matter.
-                  </div>
+                  <h4 style="font-size:1rem; margin-bottom:4px; color:var(--text-primary);">User submits a professional
+                    query</h4>
+                  <p style="font-size:0.9rem;">The user sends a query through SaNAI — for example, legal, financial, or
+                    operational questions where errors matter.</p>
                 </div>
               </div>
-              <div class="timeline-item">
-                <div class="timeline-badge">2</div>
+
+              <div style="display:flex; gap:16px;">
+                <div
+                  style="width:28px; height:28px; border-radius:50%; background:var(--bg-surface-hover); border:1px solid var(--border-highlight); color:var(--text-secondary); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.9rem; flex-shrink:0;">
+                  2</div>
                 <div>
-                  <div class="timeline-title">SaNAI routes to multiple models</div>
-                  <div class="timeline-body">
-                    Several GenAI engines respond in parallel. Their outputs are collected and
-                    displayed for comparison.
-                  </div>
+                  <h4 style="font-size:1rem; margin-bottom:4px; color:var(--text-primary);">SaNAI routes to multiple
+                    models</h4>
+                  <p style="font-size:0.9rem;">Several GenAI engines respond in parallel. Their outputs are collected
+                    and displayed for comparison.</p>
                 </div>
               </div>
-              <div class="timeline-item">
-                <div class="timeline-badge">3</div>
+
+              <div style="display:flex; gap:16px;">
+                <div
+                  style="width:28px; height:28px; border-radius:50%; background:var(--bg-surface-hover); border:1px solid var(--border-highlight); color:var(--text-secondary); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.9rem; flex-shrink:0;">
+                  3</div>
                 <div>
-                  <div class="timeline-title">Everything is logged on-chain</div>
-                  <div class="timeline-body">
-                    Queries, responses, and metadata are stored via blockchain &amp; IPFS, creating an
-                    immutable record for future audits and claims.
-                  </div>
+                  <h4 style="font-size:1rem; margin-bottom:4px; color:var(--text-primary);">Everything is logged
+                    on-chain</h4>
+                  <p style="font-size:0.9rem;">Queries, responses, and metadata are stored via blockchain &amp; IPFS,
+                    creating an immutable record.</p>
                 </div>
               </div>
-              <div class="timeline-item">
-                <div class="timeline-badge">4</div>
+
+              <div style="display:flex; gap:16px;">
+                <div
+                  style="width:28px; height:28px; border-radius:50%; background:var(--bg-surface-hover); border:1px solid var(--border-highlight); color:var(--text-secondary); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.9rem; flex-shrink:0;">
+                  4</div>
                 <div>
-                  <div class="timeline-title">Expert refinement &amp; feedback</div>
-                  <div class="timeline-body">
-                    DAO validators and expert panels can annotate outputs, improving individual
-                    AIs and generating high-value RLHF data.
-                  </div>
+                  <h4 style="font-size:1rem; margin-bottom:4px; color:var(--text-primary);">Expert refinement &amp;
+                    feedback</h4>
+                  <p style="font-size:0.9rem;">DAO validators and expert panels can annotate outputs, improving
+                    individual AIs and generating high-value RLHF data.</p>
                 </div>
               </div>
             </div>
@@ -1193,45 +374,50 @@
 
           <article class="card">
             <h3>2. Compensation Claim Procedure</h3>
-            <div class="timeline" style="margin-top:12px;">
-              <div class="timeline-item">
-                <div class="timeline-badge">A</div>
+            <div style="margin-top:24px; display:grid; gap:20px;">
+              <div style="display:flex; gap:16px;">
+                <div
+                  style="width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.1); color:var(--text-primary); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.8rem; flex-shrink:0;">
+                  A</div>
                 <div>
-                  <div class="timeline-title">User requests compensation</div>
-                  <div class="timeline-body">
-                    A user experiences damage allegedly caused by an AI-guided decision and files a
-                    claim via SaNAI.
-                  </div>
+                  <h4 style="font-size:1rem; margin-bottom:4px; color:var(--text-primary);">User requests compensation
+                  </h4>
+                  <p style="font-size:0.9rem;">A user experiences damage allegedly caused by an AI-guided decision and
+                    files a claim via SaNAI.</p>
                 </div>
               </div>
-              <div class="timeline-item">
-                <div class="timeline-badge">B</div>
+
+              <div style="display:flex; gap:16px;">
+                <div
+                  style="width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.05); border:1px solid var(--border-subtle); color:var(--text-secondary); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.8rem; flex-shrink:0;">
+                  B</div>
                 <div>
-                  <div class="timeline-title">Evidence &amp; fact-check</div>
-                  <div class="timeline-body">
-                    The claimant uploads proof of loss. DAO validators match it against the
-                    on-chain query/response trail and verify actual implementation details.
-                  </div>
+                  <h4 style="font-size:1rem; margin-bottom:4px; color:var(--text-primary);">Evidence &amp; fact-check
+                  </h4>
+                  <p style="font-size:0.9rem;">The claimant uploads proof of loss. DAO validators match it against the
+                    on-chain query/response trail.</p>
                 </div>
               </div>
-              <div class="timeline-item">
-                <div class="timeline-badge">C</div>
+
+              <div style="display:flex; gap:16px;">
+                <div
+                  style="width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.05); border:1px solid var(--border-subtle); color:var(--text-secondary); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.8rem; flex-shrink:0;">
+                  C</div>
                 <div>
-                  <div class="timeline-title">Expert evaluation</div>
-                  <div class="timeline-body">
-                    The DAO evaluates causality, negligence and impact, then proposes compensation
-                    or penalties according to predefined policies.
-                  </div>
+                  <h4 style="font-size:1rem; margin-bottom:4px; color:var(--text-primary);">Expert evaluation</h4>
+                  <p style="font-size:0.9rem;">The DAO evaluates causality, negligence and impact, then proposes
+                    compensation or penalties.</p>
                 </div>
               </div>
-              <div class="timeline-item">
-                <div class="timeline-badge">D</div>
+
+              <div style="display:flex; gap:16px;">
+                <div
+                  style="width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.05); border:1px solid var(--border-subtle); color:var(--text-secondary); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.8rem; flex-shrink:0;">
+                  D</div>
                 <div>
-                  <div class="timeline-title">Payout from mutual fund</div>
-                  <div class="timeline-body">
-                    Approved claims are paid out from pooled fees, with
-                    decisions recorded openly for future precedent and training.
-                  </div>
+                  <h4 style="font-size:1rem; margin-bottom:4px; color:var(--text-primary);">Payout from mutual fund</h4>
+                  <p style="font-size:0.9rem;">Approved claims are paid out from pooled fees, with decisions recorded
+                    openly for future precedent.</p>
                 </div>
               </div>
             </div>
@@ -1241,11 +427,12 @@
     </section>
 
     <!-- MARKET & REVENUE -->
+    <!-- MARKET & REVENUE -->
     <section id="market">
       <div class="container">
         <div class="section-header">
           <div>
-            <div class="pill-label">Market &amp; Business</div>
+            <span class="section-eyebrow">Market &amp; Business</span>
             <h2 class="section-title">A $23B+ services market with no safety layer.</h2>
           </div>
           <p class="section-kicker">
@@ -1254,20 +441,28 @@
           </p>
         </div>
 
-        <div class="metrics-grid">
+        <div class="grid-3">
           <article class="card">
-            <div class="metric-card-label">TAM · SAM · SOM</div>
-            <div class="metric-card-number">25M / 8M / 1M</div>
-            <p class="metric-card-desc">
+            <div
+              style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-secondary); margin-bottom:8px;">
+              TAM · SAM · SOM</div>
+            <div
+              style="font-size:2.5rem; font-weight:700; color:var(--accent-rust); margin-bottom:12px; line-height:1;">
+              25M <span style="font-size:1.25rem; color:var(--text-secondary);">/ 8M / 1M</span></div>
+            <p>
               Target segments range from heavy GenAI subscribers to flexible pay-as-you-go users,
               representing up to <strong>$23B</strong> in annual service revenues.
             </p>
           </article>
 
           <article class="card">
-            <div class="metric-card-label">Revenue streams</div>
-            <div class="metric-card-number">$512M+</div>
-            <p class="metric-card-desc">
+            <div
+              style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-secondary); margin-bottom:8px;">
+              Revenue streams</div>
+            <div
+              style="font-size:2.5rem; font-weight:700; color:var(--text-primary); margin-bottom:12px; line-height:1;">
+              $512M+</div>
+            <p>
               Usage royalties, mutual fund income, anonymized Q&amp;A &amp; feedback data sales,
               and expert RLHF datasets together target <strong>$0.5B+</strong> in Year 2 annual
               revenue.
@@ -1275,9 +470,13 @@
           </article>
 
           <article class="card">
-            <div class="metric-card-label">Mutual fund</div>
-            <div class="metric-card-number">$10.8M</div>
-            <p class="metric-card-desc">
+            <div
+              style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-secondary); margin-bottom:8px;">
+              Mutual fund</div>
+            <div
+              style="font-size:2.5rem; font-weight:700; color:var(--text-primary); margin-bottom:12px; line-height:1;">
+              $10.8M</div>
+            <p>
               A dedicated mutual fund, capitalized from usage fees, backs compensation payouts and
               seeds a transition into full AI (re)insurance.
             </p>
@@ -1287,11 +486,12 @@
     </section>
 
     <!-- ROADMAP -->
+    <!-- ROADMAP -->
     <section id="roadmap">
       <div class="container">
         <div class="section-header">
           <div>
-            <div class="pill-label">Growth strategy</div>
+            <span class="section-eyebrow">Growth strategy</span>
             <h2 class="section-title">From pilot platform to AI reinsurance.</h2>
           </div>
           <p class="section-kicker">
@@ -1300,62 +500,93 @@
           </p>
         </div>
 
-        <div class="roadmap-grid">
+        <div class="grid-2">
           <article class="card">
             <h3>Capital &amp; execution focus</h3>
-            <p style="font-size:13px; color:var(--muted); margin-top:6px;">
+            <p style="font-size:0.95rem; margin-top:12px;">
               Seed funding is concentrated on:
             </p>
-            <ul style="margin-top:8px; padding-left:18px; color:var(--muted); font-size:13px;">
+            <ul
+              style="margin-top:16px; padding-left:20px; color:var(--text-secondary); font-size:0.95rem; display:flex; flex-direction:column; gap:8px;">
               <li>Concept and technical verification of the blockchain-based evaluation system.</li>
               <li>Design &amp; build of the Pilot / MVP platform (UI/UX, front &amp; back end).</li>
               <li>AI agent integration and DAO evaluation prototype.</li>
               <li>Marketing, partnerships and expert network onboarding.</li>
             </ul>
 
-            <p style="font-size:12px; color:var(--muted); margin-top:12px;">
-              Budget allocation:
-              <strong>R&amp;D 40%</strong>,
-              <strong>Marketing &amp; Networking 35%</strong>,
-              <strong>Operations 20%</strong>,
-              <strong>Contingency 5%</strong>.
-            </p>
+            <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--border-subtle);">
+              <div
+                style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-tertiary); margin-bottom:8px;">
+                Budget Allocation</div>
+              <div
+                style="display:flex; gap:4px; height:8px; width:100%; border-radius:4px; overflow:hidden; margin-bottom:12px;">
+                <div style="width:40%; background:var(--accent-rust);"></div>
+                <div style="width:35%; background:var(--text-primary);"></div>
+                <div style="width:20%; background:var(--text-secondary);"></div>
+                <div style="width:5%; background:var(--text-tertiary);"></div>
+              </div>
+              <p style="font-size:0.85rem; color:var(--text-secondary);">
+                <span style="color:var(--accent-rust); font-weight:600;">R&amp;D 40%</span> &nbsp;·&nbsp;
+                <span style="color:var(--text-primary); font-weight:600;">Marketing 35%</span> &nbsp;·&nbsp;
+                <span style="color:var(--text-secondary); font-weight:600;">Ops 20%</span>
+              </p>
+            </div>
           </article>
 
           <article class="card">
             <h3>Timeline</h3>
-            <div class="roadmap-timeline">
-              <div class="roadmap-item">
-                <span>Phase 1–2 · Short term</span>
-                <h4>Launch platform &amp; data flywheel</h4>
-                <p>
-                  Release MVP, onboard early adopters, and start building a critical mass of
-                  query–response data.
-                </p>
+            <div
+              style="margin-top:24px; border-left: 2px solid var(--border-subtle); padding-left: 24px; position:relative;">
+              <div style="margin-bottom:32px; position:relative;">
+                <div
+                  style="width:12px; height:12px; background:var(--accent-rust); border-radius:50%; position:absolute; left:-31px; top:4px; box-shadow:0 0 0 4px rgba(210,105,48,0.2);">
+                </div>
+                <span
+                  style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent-rust); font-weight:600;">Phase
+                  1–2 · Short term</span>
+                <h4 style="font-size:1.1rem; margin:4px 0 8px; color:var(--text-primary);">Launch platform &amp; data
+                  flywheel</h4>
+                <p style="font-size:0.9rem;">Release MVP, onboard early adopters, and start building a critical mass of
+                  query–response data.</p>
               </div>
-              <div class="roadmap-item">
-                <span>Phase 3 · Year 2</span>
-                <h4>Partnerships &amp; tokenization</h4>
-                <p>
-                  Secure partnerships with major AI providers and enterprises. Develop proprietary
-                  stablecoin and utility token. Target $0.5B annual revenue and SOM penetration.
-                </p>
+
+              <div style="margin-bottom:32px; position:relative;">
+                <div
+                  style="width:12px; height:12px; background:var(--bg-surface); border:2px solid var(--text-secondary); border-radius:50%; position:absolute; left:-31px; top:4px;">
+                </div>
+                <span
+                  style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-secondary);">Phase
+                  3 · Year 2</span>
+                <h4 style="font-size:1.1rem; margin:4px 0 8px; color:var(--text-primary);">Partnerships &amp;
+                  tokenization</h4>
+                <p style="font-size:0.9rem;">Secure partnerships with major AI providers. Target $0.5B annual revenue
+                  and SOM penetration.</p>
               </div>
-              <div class="roadmap-item">
-                <span>Phase 5 · Year 3</span>
-                <h4>Automated compensation &amp; SAM</h4>
-                <p>
-                  Integrate AI agents to automate evaluation of minimum compensation standards and
-                  reach SAM coverage.
-                </p>
+
+              <div style="margin-bottom:32px; position:relative;">
+                <div
+                  style="width:12px; height:12px; background:var(--bg-surface); border:2px solid var(--text-tertiary); border-radius:50%; position:absolute; left:-31px; top:4px;">
+                </div>
+                <span
+                  style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-secondary);">Phase
+                  5 · Year 3</span>
+                <h4 style="font-size:1.1rem; margin:4px 0 8px; color:var(--text-primary);">Automated compensation &amp;
+                  SAM</h4>
+                <p style="font-size:0.9rem;">Integrate AI agents to automate evaluation of minimum compensation
+                  standards and reach SAM coverage.</p>
               </div>
-              <div class="roadmap-item">
-                <span>Phase 7 · Long term</span>
-                <h4>AI insurance &amp; reinsurance</h4>
-                <p>
-                  Transition into full AI insurance and reinsurance services, becoming the
-                  foundational safety layer underpinning the AI economy.
-                </p>
+
+              <div style="position:relative;">
+                <div
+                  style="width:12px; height:12px; background:var(--bg-surface); border:2px solid var(--text-tertiary); border-radius:50%; position:absolute; left:-31px; top:4px;">
+                </div>
+                <span
+                  style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-secondary);">Phase
+                  7 · Long term</span>
+                <h4 style="font-size:1.1rem; margin:4px 0 8px; color:var(--text-primary);">AI insurance &amp;
+                  reinsurance</h4>
+                <p style="font-size:0.9rem;">Transition into full AI insurance and reinsurance services, becoming the
+                  foundational safety layer.</p>
               </div>
             </div>
           </article>
@@ -1364,83 +595,36 @@
     </section>
 
     <!-- TEAM -->
-    <section id="team">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <div class="pill-label">Team</div>
-            <h2 class="section-title">Experts at the intersection of AI, risk &amp; finance.</h2>
-          </div>
-          <p class="section-kicker">
-            RustyElement brings together leaders from AI research, insurance, blockchain, and
-            regulatory policy to design a system the whole industry can trust.
-          </p>
-        </div>
 
-        <div class="team-grid">
-          <article class="card">
-            <div class="avatar">C1</div>
-            <div class="team-role">Founder &amp; CEO</div>
-            <div class="team-name">Chief Architect</div>
-            <p class="team-bio">
-              15+ years in AI infrastructure and large-scale platforms; previously led deployment
-              of safety-critical ML systems in finance.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="avatar">C2</div>
-            <div class="team-role">Risk &amp; Insurance</div>
-            <div class="team-name">Chief Risk Officer</div>
-            <p class="team-bio">
-              Veteran in reinsurance &amp; actuarial science, designing products that convert
-              emerging technologies into bankable asset classes.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="avatar">C3</div>
-            <div class="team-role">Blockchain &amp; DAO</div>
-            <div class="team-name">Head of Protocol</div>
-            <p class="team-bio">
-              Built and operated large-scale blockchain networks; deep experience with token
-              economics and decentralized governance.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="avatar">C4</div>
-            <div class="team-role">Policy &amp; Governance</div>
-            <div class="team-name">Head of Regulatory</div>
-            <p class="team-bio">
-              Former regulator and policy advisor, shaping AI and data-protection frameworks across
-              multiple jurisdictions.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
 
     <!-- CTA & CONTACT -->
     <section id="contact">
       <div class="container">
-        <div class="cta">
-          <div>
-            <div class="cta-title">Ready to build an AI safety net for your stack?</div>
-            <div class="cta-sub">
+        <div
+          style="background:linear-gradient(135deg, #1c100b, #0a0a0a); border:1px solid var(--accent-border); border-radius: var(--radius-lg); padding:60px 40px; display:flex; justify-content:space-between; align-items:center; position:relative; overflow:hidden;">
+          <div
+            style="position:absolute; top:0; right:0; width:300px; height:300px; background:var(--accent-glow); filter:blur(100px); pointer-events:none;">
+          </div>
+
+          <div style="position:relative; max-width:500px;">
+            <h2 style="font-size:2rem; margin-bottom:16px; color:var(--text-primary); letter-spacing:-0.02em;">Ready to
+              build an AI safety net?</h2>
+            <p style="font-size:1.05rem; color:var(--text-secondary); line-height:1.6;">
               Share your use cases and risk profile, and we’ll walk you through SaNAI’s pilot
               program, technical architecture, and partnership options.
-            </div>
+            </p>
           </div>
-          <div style="display:flex; flex-direction:column; gap:8px; min-width:220px;">
-            <button class="btn btn-primary">
-              Book a discovery call
+
+          <div style="position:relative; display:flex; flex-direction:column; gap:12px; min-width:240px;">
+            <button class="btn btn-primary" style="width:100%;">
+              Request early access
             </button>
-            <button class="btn">
-              Download investor &amp; product deck
+            <button class="btn btn-secondary" style="width:100%;">
+              Download deck
             </button>
-            <p style="font-size:11px; color:var(--muted);">
-              Or email us at <a href="mailto:hello@rustyelement.ai">hello@rustyelement.ai</a>
+            <p style="text-align:center; font-size:0.85rem; color:var(--text-tertiary); margin-top:8px;">
+              Or email us at <a href="mailto:info@rustyelement.com"
+                style="color:var(--text-secondary); text-decoration:underline;">info@rustyelement.com</a>
             </p>
           </div>
         </div>
@@ -1449,12 +633,40 @@
   </main>
 
   <footer>
-    <div class="container footer-row">
-      <div>© <span id="year"></span> Rusty Element Inc. All rights reserved.</div>
-      <div class="footer-links">
-        <a href="#top">Back to top</a>
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
+    <div class="container">
+      <div class="footer-top">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <a href="#top" class="logo">
+            <div class="logo-mark" style="height:32px;"><img src="logo.png" style="height:100%; width:auto;"
+                alt="Rusty Element Logo"></div>
+            <span style="font-size:1rem; color:var(--text-primary);">RustyElement</span>
+          </a>
+          <p style="font-size:0.85rem; color:var(--text-tertiary); max-width:300px;">
+            Building the safety layer for the AI economy with blockchain-verified liability protection and DAO
+            governance.
+          </p>
+        </div>
+
+        <div class="footer-links" style="display:flex; gap:40px;">
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <strong style="font-size:0.85rem; color:var(--text-primary);">Product</strong>
+            <a href="#solution" style="font-size:0.85rem; color:var(--text-secondary);">Solution</a>
+            <a href="#how" style="font-size:0.85rem; color:var(--text-secondary);">How it works</a>
+            <a href="#roadmap" style="font-size:0.85rem; color:var(--text-secondary);">Roadmap</a>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <strong style="font-size:0.85rem; color:var(--text-primary);">Company</strong>
+            <a href="#contact" style="font-size:0.85rem; color:var(--text-secondary);">Contact</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© <span id="year"></span> Rusty Element Inc. All rights reserved.</div>
+        <div style="display:flex; gap:24px;">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
       </div>
     </div>
   </footer>
@@ -1463,4 +675,5 @@
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
+
 </html>
