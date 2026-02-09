@@ -449,6 +449,40 @@ footer {
         /* Mobile menu to be implemented if needed */
     }
 
+    /* Mobile Header Adjustments */
+    header .container {
+        padding: 0 16px;
+    }
+
+    .logo-mark {
+        height: 36px;
+        /* Smaller logo on mobile */
+    }
+
+    .logo-text span:first-child {
+        font-size: 1rem;
+    }
+
+    .logo-sub {
+        display: none;
+        /* Hide subtitle on mobile to save space */
+    }
+
+    .nav-cta {
+        display: flex;
+        gap: 8px;
+    }
+
+    .nav-cta .btn-secondary {
+        display: none;
+        /* Hide secondary button on mobile */
+    }
+
+    .nav-cta .btn-primary {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+
     .footer-top {
         flex-direction: column;
     }
